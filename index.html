@@ -6,7 +6,6 @@
   <title>FinançasPro — Open Finance</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
   <script src="https://cdn.pluggy.ai/pluggy-connect/v2.1.0/pluggy-connect.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -151,34 +150,6 @@
     .type-btn.active-income { background:rgba(200,241,108,0.15); color:var(--income); }
     .type-btn.active-expense { background:rgba(255,107,107,0.15); color:var(--expense); }
 
-    /* PARCELAS */
-    .parcelas-toggle { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; cursor:pointer; margin-bottom:12px; transition:border-color 0.2s; }
-    .parcelas-toggle:hover { border-color:var(--accent); }
-    .parcelas-toggle-label { font-size:13px; font-weight:500; }
-    .toggle-switch { width:36px; height:20px; background:var(--border); border-radius:20px; position:relative; transition:background 0.2s; flex-shrink:0; }
-    .toggle-switch.on { background:var(--accent); }
-    .toggle-knob { position:absolute; top:3px; left:3px; width:14px; height:14px; background:#fff; border-radius:50%; transition:transform 0.2s; }
-    .toggle-switch.on .toggle-knob { transform:translateX(16px); background:#000; }
-    .parcelas-box { background:var(--surface2); border:1px solid rgba(200,241,108,0.3); border-radius:12px; padding:14px; margin-bottom:12px; animation:fadeIn 0.2s ease; }
-    .parcelas-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .parcela-preview { margin-top:10px; padding:10px 12px; background:var(--bg); border-radius:8px; font-size:12px; color:var(--muted); line-height:1.8; }
-    .parcela-preview strong { color:var(--accent); font-size:13px; }
-    .installment-badge { display:inline-flex; align-items:center; gap:3px; font-size:10px; padding:2px 7px; border-radius:4px; background:rgba(91,138,255,0.12); color:var(--accent2); margin-left:4px; }
-
-    /* PARCELAS */
-    .parcelas-toggle { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; cursor:pointer; margin-bottom:12px; transition:border-color 0.2s; }
-    .parcelas-toggle:hover { border-color:var(--accent); }
-    .parcelas-toggle-label { font-size:13px; font-weight:500; display:flex; align-items:center; gap:8px; }
-    .toggle-switch { width:36px; height:20px; background:var(--border); border-radius:20px; position:relative; transition:background 0.2s; }
-    .toggle-switch.on { background:var(--accent); }
-    .toggle-knob { position:absolute; top:3px; left:3px; width:14px; height:14px; background:#fff; border-radius:50%; transition:transform 0.2s; }
-    .toggle-switch.on .toggle-knob { transform:translateX(16px); background:#000; }
-    .parcelas-box { background:var(--surface2); border:1px solid var(--accent); border-radius:12px; padding:14px; margin-bottom:12px; animation:fadeIn 0.2s ease; }
-    .parcelas-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .parcela-preview { margin-top:10px; padding:10px 12px; background:var(--bg); border-radius:8px; font-size:12px; color:var(--muted); line-height:1.7; }
-    .parcela-preview strong { color:var(--accent); font-size:13px; }
-    .installment-badge { display:inline-flex; align-items:center; gap:4px; font-size:10px; padding:2px 7px; border-radius:4px; background:rgba(91,138,255,0.12); color:var(--accent2); margin-left:4px; }
-
     /* SETUP STEPS */
     .setup-step { display:flex; gap:14px; margin-bottom:20px; }
     .step-num { width:28px; height:28px; border-radius:50%; background:var(--accent); color:#000; font-size:12px; font-weight:700; display:grid; place-items:center; flex-shrink:0; margin-top:2px; }
@@ -194,146 +165,10 @@
     ::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:10px}
 
     @media(max-width:1200px){.summary-grid{grid-template-columns:repeat(2,1fr)}.content-grid,.transactions-grid{grid-template-columns:1fr}}
-
-    /* LOGIN SCREEN */
-    .lock-screen { position:fixed; inset:0; background:var(--bg); z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0; }
-    .lock-screen.hidden { display:none; }
-    .lock-card { background:var(--surface); border:1px solid var(--border); border-radius:24px; padding:48px 40px; width:360px; text-align:center; animation:slideUp 0.35s ease; }
-    .lock-logo { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:32px; }
-    .lock-logo-icon { width:44px; height:44px; background:var(--accent); border-radius:12px; display:grid; place-items:center; }
-    .lock-logo-icon svg { width:22px; height:22px; }
-    .lock-title { font-family:'DM Serif Display',serif; font-size:26px; margin-bottom:6px; }
-    .lock-sub { font-size:13px; color:var(--muted); margin-bottom:32px; }
-    .pin-dots { display:flex; justify-content:center; gap:12px; margin-bottom:28px; }
-    .pin-dot { width:14px; height:14px; border-radius:50%; background:var(--surface2); border:2px solid var(--border); transition:all 0.2s; }
-    .pin-dot.filled { background:var(--accent); border-color:var(--accent); transform:scale(1.1); }
-    .pin-dot.error { background:var(--expense); border-color:var(--expense); animation:shake 0.4s ease; }
-    .numpad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px; }
-    .numpad-btn { background:var(--surface2); border:1px solid var(--border); color:var(--text); font-size:20px; font-weight:500; padding:16px; border-radius:12px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; user-select:none; }
-    .numpad-btn:hover { background:var(--border); border-color:rgba(255,255,255,0.15); transform:scale(1.03); }
-    .numpad-btn:active { transform:scale(0.96); }
-    .numpad-btn.del { font-size:16px; color:var(--muted); }
-    .numpad-btn.empty { background:transparent; border:none; cursor:default; }
-    .numpad-btn.empty:hover { transform:none; }
-    .lock-error { font-size:13px; color:var(--expense); margin-top:-8px; margin-bottom:8px; min-height:18px; }
-    .setup-pin-info { font-size:12px; color:var(--muted); line-height:1.6; padding:10px 14px; background:rgba(200,241,108,0.05); border:1px solid rgba(200,241,108,0.15); border-radius:10px; margin-bottom:20px; }
-    .supabase-setup { margin-top:20px; padding-top:20px; border-top:1px solid var(--border); }
-    .supabase-setup-title { font-size:12px; font-weight:600; color:var(--muted); letter-spacing:0.5px; text-transform:uppercase; margin-bottom:12px; }
-    .supabase-inputs { display:flex; flex-direction:column; gap:8px; }
-    .supabase-input { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:9px 12px; border-radius:9px; font-size:12px; font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.2s; }
-    .supabase-input:focus { border-color:var(--accent); }
-    .supabase-save-btn { width:100%; margin-top:8px; background:var(--accent); color:#000; border:none; padding:10px; border-radius:9px; font-size:13px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; }
-    .sync-indicator { position:fixed; bottom:20px; right:20px; display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:8px 14px; font-size:12px; color:var(--muted); z-index:500; transition:all 0.3s; }
-    .sync-led { width:8px; height:8px; border-radius:50%; background:var(--muted); transition:background 0.3s; }
-    .sync-led.syncing { background:#f59e0b; animation:pulse 1s infinite; }
-    .sync-led.synced { background:var(--income); }
-    .sync-led.error { background:var(--expense); }
-    @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
-
     @media(max-width:768px){.sidebar{display:none}.main{margin-left:0;padding:20px 16px}.summary-grid{grid-template-columns:1fr 1fr}.connect-panel{flex-direction:column;align-items:flex-start}.modal,.setup-modal{width:95vw}}
-    /* EMPRÉSTIMOS PAGE */
-    .emp-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--card-r); padding:20px 24px; margin-bottom:12px; transition:border-color 0.2s; }
-    .emp-card:hover { border-color:rgba(255,255,255,0.12); }
-    .emp-card-header { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
-    .emp-avatar { width:44px; height:44px; border-radius:50%; display:grid; place-items:center; font-size:16px; font-weight:700; flex-shrink:0; }
-    .emp-info { flex:1; }
-    .emp-name { font-size:15px; font-weight:600; }
-    .emp-meta { font-size:12px; color:var(--muted); margin-top:2px; }
-    .emp-amount { text-align:right; }
-    .emp-valor { font-family:'DM Serif Display',serif; font-size:20px; }
-    .emp-tipo-badge { font-size:10px; padding:3px 8px; border-radius:6px; font-weight:600; display:inline-block; margin-top:4px; }
-    .badge-emprestei { background:rgba(200,241,108,0.12); color:var(--income); }
-    .badge-devo { background:rgba(255,107,107,0.12); color:var(--expense); }
-    .emp-parcelas-row { display:flex; gap:4px; flex-wrap:wrap; margin:10px 0; }
-    .emp-p-dot { width:24px; height:24px; border-radius:6px; display:grid; place-items:center; font-size:9px; font-weight:700; cursor:pointer; transition:transform 0.15s; }
-    .emp-p-dot:hover { transform:scale(1.15); }
-    .emp-p-dot.paid { background:rgba(200,241,108,0.15); color:var(--income); }
-    .emp-p-dot.next { background:rgba(255,107,107,0.18); color:var(--expense); border:1px solid var(--expense); }
-    .emp-p-dot.future { background:var(--surface2); color:var(--muted); }
-    .emp-card-footer { display:flex; align-items:center; justify-content:space-between; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--muted); }
-    .emp-status-badge { padding:3px 10px; border-radius:6px; font-weight:600; font-size:12px; }
-    .status-pendente { background:rgba(245,158,11,0.12); color:#f59e0b; }
-    .status-atrasado { background:rgba(255,107,107,0.12); color:var(--expense); }
-    .status-quitado { background:rgba(200,241,108,0.12); color:var(--income); }
-
-    /* PARCELAS PAGE */
-    .parcela-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--card-r); padding:20px 24px; margin-bottom:12px; transition:border-color 0.2s; }
-    .parcela-card:hover { border-color:rgba(255,255,255,0.12); }
-    .parcela-card-header { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
-    .parcela-card-icon { width:42px; height:42px; border-radius:12px; display:grid; place-items:center; font-size:18px; flex-shrink:0; }
-    .parcela-card-info { flex:1; }
-    .parcela-card-name { font-size:15px; font-weight:600; }
-    .parcela-card-meta { font-size:12px; color:var(--muted); margin-top:2px; }
-    .parcela-card-amount { text-align:right; }
-    .parcela-card-vp { font-family:'DM Serif Display',serif; font-size:20px; color:var(--expense); }
-    .parcela-card-total { font-size:11px; color:var(--muted); margin-top:2px; }
-    .parcela-progress-wrap { margin-bottom:10px; }
-    .parcela-progress-label { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:6px; }
-    .parcela-progress-label span:last-child { color:var(--expense); font-weight:600; }
-    .parcela-timeline { display:flex; gap:4px; flex-wrap:wrap; margin-top:10px; }
-    .p-dot { width:22px; height:22px; border-radius:6px; display:grid; place-items:center; font-size:9px; font-weight:700; }
-    .p-dot.paid { background:rgba(200,241,108,0.15); color:var(--income); }
-    .p-dot.next { background:rgba(255,107,107,0.2); color:var(--expense); border:1px solid var(--expense); }
-    .p-dot.future { background:var(--surface2); color:var(--muted); }
-    .parcela-card-footer { display:flex; align-items:center; justify-content:space-between; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--muted); }
-    .next-badge { background:rgba(255,107,107,0.1); color:var(--expense); padding:3px 10px; border-radius:6px; font-weight:600; font-size:12px; }
-    .done-badge { background:rgba(200,241,108,0.1); color:var(--income); padding:3px 10px; border-radius:6px; font-weight:600; font-size:12px; }
   </style>
 </head>
 <body>
-
-<!-- LOCK SCREEN -->
-<div class="lock-screen" id="lockScreen">
-  <div class="lock-card">
-    <div class="lock-logo">
-      <div class="lock-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-      <span style="font-family:'DM Serif Display',serif;font-size:20px;">Finan<span style="color:var(--accent)">ças</span>Pro</span>
-    </div>
-    <h2 class="lock-title" id="lockTitle">Bem-vindo</h2>
-    <p class="lock-sub" id="lockSub">Digite seu PIN para entrar</p>
-    <div class="pin-dots" id="pinDots">
-      <div class="pin-dot" id="d0"></div>
-      <div class="pin-dot" id="d1"></div>
-      <div class="pin-dot" id="d2"></div>
-      <div class="pin-dot" id="d3"></div>
-    </div>
-    <div class="lock-error" id="lockError"></div>
-    <div class="numpad" id="numpad">
-      <button class="numpad-btn" onclick="pinPress('1')">1</button>
-      <button class="numpad-btn" onclick="pinPress('2')">2</button>
-      <button class="numpad-btn" onclick="pinPress('3')">3</button>
-      <button class="numpad-btn" onclick="pinPress('4')">4</button>
-      <button class="numpad-btn" onclick="pinPress('5')">5</button>
-      <button class="numpad-btn" onclick="pinPress('6')">6</button>
-      <button class="numpad-btn" onclick="pinPress('7')">7</button>
-      <button class="numpad-btn" onclick="pinPress('8')">8</button>
-      <button class="numpad-btn" onclick="pinPress('9')">9</button>
-      <button class="numpad-btn empty"></button>
-      <button class="numpad-btn" onclick="pinPress('0')">0</button>
-      <button class="numpad-btn del" onclick="pinDel()">⌫</button>
-    </div>
-    <div id="supabaseSetupSection" style="display:none;">
-      <div class="supabase-setup">
-        <div class="supabase-setup-title">⚙️ Configurar Supabase (sincronização)</div>
-        <div class="supabase-inputs">
-          <input class="supabase-input" id="sbUrl" placeholder="Supabase Project URL" />
-          <input class="supabase-input" id="sbKey" placeholder="Supabase anon key" />
-          <button class="supabase-save-btn" onclick="saveSupabaseConfig()">Salvar e conectar</button>
-        </div>
-        <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.6;">
-          Acesse <strong style="color:var(--accent2)">supabase.com</strong> → Novo projeto → Settings → API<br>
-          Cole a <em>Project URL</em> e a chave <em>anon public</em> acima.
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SYNC INDICATOR -->
-<div class="sync-indicator" id="syncIndicator" style="display:none;">
-  <div class="sync-led" id="syncLed"></div>
-  <span id="syncIndicatorLabel">Conectando...</span>
-</div>
 
 <aside class="sidebar">
   <div class="logo">
@@ -346,8 +181,6 @@
       <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-dot"></span> Dashboard</div>
       <div class="nav-item" onclick="showPage('transactions')"><span class="nav-dot"></span> Transações <span class="badge" id="badge-tx">8</span></div>
       <div class="nav-item" onclick="showPage('goals')"><span class="nav-dot"></span> Metas</div>
-      <div class="nav-item" onclick="showPage('parcelas')"><span class="nav-dot"></span> 💳 Parcelas</div>
-      <div class="nav-item" onclick="showPage('emprestimos')"><span class="nav-dot"></span> 🤝 Empréstimos</div>
     </div>
     <div class="nav-section">
       <div class="nav-label">Open Finance</div>
@@ -362,8 +195,7 @@
   <div class="sidebar-bottom">
     <div class="user-card">
       <div class="user-avatar">JM</div>
-      <div class="user-info"><div class="user-name">LUAN LIMABB</div><div class="user-plan">Open Finance ✦</div></div>
-      <button onclick="lockApp()" title="Bloquear" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:4px;" >🔒</button>
+      <div class="user-info"><div class="user-name">João Mendes</div><div class="user-plan">Open Finance ✦</div></div>
     </div>
   </div>
 </aside>
@@ -470,32 +302,6 @@
     <div class="card" style="text-align:center;padding:60px;"><div style="font-size:40px;margin-bottom:16px;">📊</div><div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:8px;">Em breve</div><div style="color:var(--muted);font-size:14px;">Relatórios detalhados disponíveis em breve.</div></div>
   </div>
 
-  <!-- EMPRÉSTIMOS -->
-  <div id="page-emprestimos" style="display:none">
-    <div class="topbar">
-      <div><h1 class="page-title">Empréstimos</h1><p class="page-subtitle" id="emp-subtitle">Controle o que você emprestou e o que você deve</p></div>
-      <button class="btn-primary" onclick="openEmpModal()">+ Novo empréstimo</button>
-    </div>
-    <!-- TABS -->
-    <div style="display:flex;gap:8px;margin-bottom:24px;">
-      <button class="chip active" id="tab-todos" onclick="setEmpTab('todos')">Todos</button>
-      <button class="chip" id="tab-emprestei" onclick="setEmpTab('emprestei')">💸 Emprestei</button>
-      <button class="chip" id="tab-devo" onclick="setEmpTab('devo')">💰 Devo</button>
-    </div>
-    <div id="emp-summary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;"></div>
-    <div id="emp-list"></div>
-  </div>
-
-  <!-- PARCELAS EM ANDAMENTO -->
-  <div id="page-parcelas" style="display:none">
-    <div class="topbar">
-      <div><h1 class="page-title">Parcelas em Andamento</h1><p class="page-subtitle" id="parcelas-subtitle">Acompanhe suas compras parceladas</p></div>
-      <button class="btn-primary" onclick="openParcelaModal()">+ Adicionar parcela</button>
-    </div>
-    <div id="parcelas-summary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;"></div>
-    <div id="parcelas-list"></div>
-  </div>
-
 </main>
 
 <!-- TRANSACTION MODAL -->
@@ -517,31 +323,6 @@
         <option value="Alimentação">🍔 Alimentação</option><option value="Moradia">🏠 Moradia</option><option value="Transporte">🚗 Transporte</option><option value="Saúde">💊 Saúde</option><option value="Lazer">🎮 Lazer</option><option value="Educação">📚 Educação</option><option value="Salário">💼 Salário</option><option value="Investimento">📈 Investimento</option><option value="Outros">📦 Outros</option>
       </select>
     </div>
-    <!-- PARCELAS -->
-    <div class="parcelas-toggle" onclick="toggleParcelas()" id="parcelasToggle">
-      <span class="parcelas-toggle-label">💳 Parcelado no cartão</span>
-      <div class="toggle-switch" id="toggleSwitch"><div class="toggle-knob"></div></div>
-    </div>
-    <div class="parcelas-box" id="parcelasBox" style="display:none;">
-      <div class="parcelas-grid">
-        <div class="form-group" style="margin-bottom:0;">
-          <label class="form-label">Nº de parcelas</label>
-          <select class="form-select" id="txParcelas" onchange="updatePreview()">
-            <option value="2">2x</option><option value="3">3x</option><option value="4">4x</option>
-            <option value="5">5x</option><option value="6">6x</option><option value="7">7x</option>
-            <option value="8">8x</option><option value="9">9x</option><option value="10">10x</option>
-            <option value="11">11x</option><option value="12">12x</option><option value="18">18x</option>
-            <option value="24">24x</option>
-          </select>
-        </div>
-        <div class="form-group" style="margin-bottom:0;">
-          <label class="form-label">Juros (% a.m.)</label>
-          <input class="form-input" id="txJuros" type="number" value="0" min="0" step="0.1" placeholder="0 = sem juros" oninput="updatePreview()" />
-        </div>
-      </div>
-      <div class="parcela-preview" id="parcelaPreview">—</div>
-    </div>
-
     <div class="modal-actions">
       <button class="btn-ghost" onclick="closeModalDirect()">Cancelar</button>
       <button class="btn-confirm" onclick="addTransaction()">Salvar</button>
@@ -616,236 +397,6 @@ export default async function handler(req, res) {
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-// SUPABASE + PIN AUTH + REALTIME SYNC
-// ═══════════════════════════════════════════════════════════
-let supabaseClient = null;
-let currentPin = '';
-let storedPin  = '';
-let settingPin = false;
-let isUnlocked = false;
-
-const STORAGE_KEY_PIN   = 'fp_pin';
-const STORAGE_KEY_SB_URL = 'fp_sb_url';
-const STORAGE_KEY_SB_KEY = 'fp_sb_key';
-const TABLE = 'financas_data';
-
-// ── Supabase init ────────────────────────────────────────────
-function initSupabase() {
-  if (supabaseClient) return true; // prevent multiple instances
-  const url = localStorage.getItem(STORAGE_KEY_SB_URL);
-  const key = localStorage.getItem(STORAGE_KEY_SB_KEY);
-  if (!url || !key) return false;
-  try {
-    supabaseClient = window.supabase.createClient(url, key, {
-      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-      global: { headers: { 'X-Client-Info': 'financas-pro' } }
-    });
-    return true;
-  } catch(e) { console.warn('Supabase init error:', e); return false; }
-}
-
-function saveSupabaseConfig() {
-  const url = document.getElementById('sbUrl').value.trim();
-  const key = document.getElementById('sbKey').value.trim();
-  if (!url || !key) { alert('Preencha os dois campos!'); return; }
-  localStorage.setItem(STORAGE_KEY_SB_URL, url);
-  localStorage.setItem(STORAGE_KEY_SB_KEY, key);
-  if (initSupabase()) {
-    document.getElementById('supabaseSetupSection').style.display = 'none';
-    setSyncStatus('syncing', 'Conectando...');
-    loadFromSupabase().then(function() {
-      subscribeRealtime();
-    }).catch(function(e) {
-      console.error('Connection error:', e);
-      setSyncStatus('error', 'Erro de conexao');
-    });
-  }
-}
-
-// ── Sync status indicator ────────────────────────────────────
-function setSyncStatus(state, label) {
-  const ind = document.getElementById('syncIndicator');
-  const led = document.getElementById('syncLed');
-  const lbl = document.getElementById('syncIndicatorLabel');
-  if (!ind) return;
-  ind.style.display = 'flex';
-  led.className = 'sync-led ' + state;
-  lbl.textContent = label;
-}
-
-// ── Save all data to Supabase ────────────────────────────────
-async function saveToSupabase() {
-  if (!supabaseClient) return;
-  setSyncStatus('syncing', 'Salvando...');
-  const payload = {
-    id: 'main',
-    transactions: JSON.stringify(transactions),
-    goals: JSON.stringify(goals),
-    parcelas_andamento: JSON.stringify(parcelasAndamento),
-    emprestimos: JSON.stringify(emprestimos),
-    updated_at: new Date().toISOString()
-  };
-  const { error } = await supabaseClient.from(TABLE).upsert(payload, { onConflict: 'id' });
-  if (error) { console.error('Save error:', JSON.stringify(error)); setSyncStatus('error', 'Erro: ' + (error.message || error.code || JSON.stringify(error))); }
-  else { setSyncStatus('synced', 'Sincronizado ' + new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})); }
-}
-
-// ── Load data from Supabase ──────────────────────────────────
-async function loadFromSupabase() {
-  if (!supabaseClient) return;
-  setSyncStatus('syncing', 'Carregando...');
-  try {
-    var result = await supabaseClient.from(TABLE).select('*').eq('id','main').maybeSingle();
-    var data = result.data; var error = result.error;
-    if (error) {
-      console.error('Load error:', JSON.stringify(error));
-      setSyncStatus('error', 'Erro: ' + (error.message || error.code || 'desconhecido'));
-      return;
-    }
-    if (data) {
-      try { if (data.transactions)       transactions      = JSON.parse(data.transactions); }       catch(e){}
-      try { if (data.goals)              goals             = JSON.parse(data.goals); }              catch(e){}
-      try { if (data.parcelas_andamento) parcelasAndamento = JSON.parse(data.parcelas_andamento); } catch(e){}
-      try { if (data.emprestimos)        emprestimos       = JSON.parse(data.emprestimos); }        catch(e){}
-      updateAll(); renderGoalsMini(); updateSummary();
-    }
-    setSyncStatus('synced', 'Sincronizado');
-  } catch(e) {
-    console.error('Load exception:', e);
-    setSyncStatus('error', 'Erro de conexao');
-  }
-}
-
-// ── Realtime subscription ────────────────────────────────────
-function subscribeRealtime() {
-  if (!supabaseClient) return;
-  supabaseClient
-    .channel('financas-sync')
-    .on('postgres_changes', { event: '*', schema: 'public', table: TABLE }, function(payload) {
-      if (payload.new && payload.new.id === 'main') {
-        setSyncStatus('syncing', 'Atualizando...');
-        var d = payload.new;
-        try { if (d.transactions)       transactions      = JSON.parse(d.transactions); }       catch(e){}
-        try { if (d.goals)              goals             = JSON.parse(d.goals); }              catch(e){}
-        try { if (d.parcelas_andamento) parcelasAndamento = JSON.parse(d.parcelas_andamento); } catch(e){}
-        try { if (d.emprestimos)        emprestimos       = JSON.parse(d.emprestimos); }        catch(e){}
-        updateAll(); renderGoalsMini(); updateSummary(); renderBarChart();
-        setSyncStatus('synced', 'Atualizado agora');
-      }
-    })
-    .subscribe();
-}
-
-// ── Wrap save calls ──────────────────────────────────────────
-function syncAfterChange() { saveToSupabase(); }
-
-// ── PIN logic ────────────────────────────────────────────────
-function initLockScreen() {
-  storedPin = localStorage.getItem(STORAGE_KEY_PIN) || '';
-  if (!storedPin) {
-    settingPin = true;
-    document.getElementById('lockTitle').textContent = 'Criar PIN';
-    document.getElementById('lockSub').textContent   = 'Escolha um PIN de 4 dígitos para proteger o app';
-  } else {
-    settingPin = false;
-    document.getElementById('lockTitle').textContent = 'FinançasPro';
-    document.getElementById('lockSub').textContent   = 'Digite seu PIN para entrar';
-  }
-  // show supabase setup if not configured
-  if (!localStorage.getItem(STORAGE_KEY_SB_URL)) {
-    document.getElementById('supabaseSetupSection').style.display = 'block';
-  }
-  updatePinDots();
-}
-
-function pinPress(digit) {
-  if (currentPin.length >= 4) return;
-  currentPin += digit;
-  updatePinDots();
-  document.getElementById('lockError').textContent = '';
-  if (currentPin.length === 4) {
-    setTimeout(function() { handlePinComplete(); }, 120);
-  }
-}
-
-function pinDel() {
-  currentPin = currentPin.slice(0, -1);
-  updatePinDots();
-  document.getElementById('lockError').textContent = '';
-}
-
-function updatePinDots() {
-  for (var i = 0; i < 4; i++) {
-    var dot = document.getElementById('d' + i);
-    dot.className = 'pin-dot' + (i < currentPin.length ? ' filled' : '');
-  }
-}
-
-var pendingPin = '';
-function handlePinComplete() {
-  if (settingPin) {
-    if (!pendingPin) {
-      // first entry — ask to confirm
-      pendingPin = currentPin;
-      currentPin = '';
-      updatePinDots();
-      document.getElementById('lockSub').textContent = 'Confirme seu PIN';
-    } else {
-      // second entry — confirm
-      if (currentPin === pendingPin) {
-        localStorage.setItem(STORAGE_KEY_PIN, currentPin);
-        storedPin  = currentPin;
-        settingPin = false;
-        pendingPin = '';
-        unlock();
-      } else {
-        pendingPin = '';
-        pinError('PINs diferentes. Tente de novo.');
-      }
-    }
-  } else {
-    if (currentPin === storedPin) {
-      unlock();
-    } else {
-      pinError('PIN incorreto');
-    }
-  }
-}
-
-function pinError(msg) {
-  document.getElementById('lockError').textContent = msg;
-  for (var i = 0; i < 4; i++) document.getElementById('d' + i).className = 'pin-dot error';
-  setTimeout(function() {
-    currentPin = '';
-    updatePinDots();
-  }, 600);
-}
-
-function unlock() {
-  isUnlocked = true;
-  document.getElementById('lockScreen').classList.add('hidden');
-  // init Supabase and load data
-  if (initSupabase()) {
-    setSyncStatus('syncing', 'Conectando...');
-    loadFromSupabase().then(function() { subscribeRealtime(); });
-  } else {
-    document.getElementById('syncIndicator').style.display = 'none';
-  }
-}
-
-// keyboard support
-document.addEventListener('keydown', function(e) {
-  if (!isUnlocked) {
-    if (e.key >= '0' && e.key <= '9') pinPress(e.key);
-    if (e.key === 'Backspace') pinDel();
-  }
-});
-
-// ═══════════════════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════════════════
-
 const CAT_COLORS = {'Alimentação':'#f59e0b','Moradia':'#5b8aff','Transporte':'#8b5cf6','Saúde':'#10b981','Lazer':'#f97316','Educação':'#06b6d4','Salário':'#c8f16c','Investimento':'#a78bfa','Outros':'#6b7280'};
 const CAT_ICONS  = {'Alimentação':'🍔','Moradia':'🏠','Transporte':'🚗','Saúde':'💊','Lazer':'🎮','Educação':'📚','Salário':'💼','Investimento':'📈','Outros':'📦'};
 
@@ -883,8 +434,6 @@ function showPage(page) {
   if(page==='transactions') renderAllTransactions();
   if(page==='goals') renderGoalsFull();
   if(page==='connected') renderConnectedPage();
-  if(page==='parcelas') renderParcelasPage();
-  if(page==='emprestimos') renderEmpPage();
 }
 
 // PLUGGY
@@ -962,7 +511,6 @@ function simulateSync() {
   document.getElementById('pill-bradesco').className='bank-pill connected';
   updateAll(); updateConnectBanner(); showSyncBar();
   if(document.getElementById('page-transactions').style.display!=='none') renderAllTransactions();
-  syncAfterChange();
 }
 
 function updateConnectBanner() {
@@ -981,7 +529,7 @@ function renderConnectedPage() {
   const connected=banks.filter(b=>connectedBanks[b.key]);
   const disconnected=banks.filter(b=>!connectedBanks[b.key]);
   if(!connected.length){
-    el.innerHTML=`<div class="card" style="text-align:center;padding:60px;"><div style="font-size:40px;margin-bottom:16px;">🏦</div><div style="font-family:DM Serif Display,serif;font-size:22px;margin-bottom:8px;">Nenhum banco conectado</div><div style="color:var(--muted);font-size:14px;margin-bottom:24px;">Configure o Pluggy para sincronizar automaticamente</div><button class="btn-primary" style="display:inline-flex;margin:0 auto;" onclick="openSetupModal()">⚡ Conectar agora</button></div>`;
+    el.innerHTML=`<div class="card" style="text-align:center;padding:60px;"><div style="font-size:40px;margin-bottom:16px;">🏦</div><div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:8px;">Nenhum banco conectado</div><div style="color:var(--muted);font-size:14px;margin-bottom:24px;">Configure o Pluggy para sincronizar automaticamente</div><button class="btn-primary" style="display:inline-flex;margin:0 auto;" onclick="openSetupModal()">⚡ Conectar agora</button></div>`;
     return;
   }
   el.innerHTML=connected.map(b=>`<div class="card" style="margin-bottom:16px;display:flex;align-items:center;gap:16px;"><div style="width:48px;height:48px;border-radius:12px;background:${b.color}22;display:grid;place-items:center;font-size:24px;">${b.icon}</div><div style="flex:1;"><div style="font-weight:600;font-size:15px;">${b.name}</div><div style="font-size:12px;color:var(--muted);">Conta conectada via Open Finance</div></div><div style="display:flex;gap:8px;align-items:center;"><span style="font-size:12px;color:var(--income);background:rgba(200,241,108,0.1);padding:4px 10px;border-radius:6px;">✓ Ativo</span><button class="btn-ghost" style="font-size:12px;padding:6px 12px;" onclick="disconnectBank('${b.key}')">Desconectar</button></div></div>`).join('')+
@@ -1032,12 +580,12 @@ function txHTML(t,del=false){
   const sign=t.type==='income'?'+':'-';const cls=t.type==='income'?'pos':'neg';
   const d=new Date(t.date+'T12:00:00');const ds=d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
   const src=t.source&&t.source!=='manual'?`<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(91,138,255,0.1);color:var(--accent2);margin-left:4px;">${t.source}</span>`:'';
-  const parcBadge=t.parcela?'<span class="installment-badge">ð³ '+t.parcela+'</span>':'';return`<div class="tx-item"><div class="tx-icon" style="background:${CAT_COLORS[t.cat]||'#6b7280'}22;">${CAT_ICONS[t.cat]||'📦'}</div><div class="tx-info"><div class="tx-name">${t.desc.replace(/ \(\d+\/\d+\)$/,'')}${src}${parcBadge}</div><div class="tx-date">${ds} · <span class="tx-tag">${t.cat}</span></div></div><div class="tx-amount ${cls}">${sign} R$ ${t.amount.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div>${del?`<button onclick="deleteTx(${JSON.stringify(t.id)})" style="background:none;border:none;color:var(--muted);cursor:pointer;margin-left:8px;font-size:18px;line-height:1;">×</button>`:''}</div>`;
+  return`<div class="tx-item"><div class="tx-icon" style="background:${CAT_COLORS[t.cat]||'#6b7280'}22;">${CAT_ICONS[t.cat]||'📦'}</div><div class="tx-info"><div class="tx-name">${t.desc}${src}</div><div class="tx-date">${ds} · <span class="tx-tag">${t.cat}</span></div></div><div class="tx-amount ${cls}">${sign} R$ ${t.amount.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div>${del?`<button onclick="deleteTx(${JSON.stringify(t.id)})" style="background:none;border:none;color:var(--muted);cursor:pointer;margin-left:8px;font-size:18px;line-height:1;">×</button>`:''}</div>`;
 }
 
 function renderRecentTransactions(){document.getElementById('recentTxList').innerHTML=[...transactions].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,6).map(t=>txHTML(t)).join('');}
 function renderAllTransactions(){document.getElementById('allTxList').innerHTML=[...transactions].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(t=>txHTML(t,true)).join('');document.getElementById('tx-count-label').textContent=transactions.length+' registros';}
-function deleteTx(id){transactions=transactions.filter(t=>t.id!==id);renderAllTransactions();updateSummary();renderDonut();syncAfterChange();}
+function deleteTx(id){transactions=transactions.filter(t=>t.id!==id);renderAllTransactions();updateSummary();renderDonut();}
 
 function goalHTML(g){const pct=Math.min(100,Math.round(g.current/g.target*100));return`<div class="goal-item"><div class="goal-header"><div><div class="goal-name">${g.name}</div><div class="goal-target">Meta: R$ ${g.target.toLocaleString('pt-BR')}</div></div><div class="goal-current" style="color:${g.color}">R$ ${g.current.toLocaleString('pt-BR')}</div></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${g.color}"></div></div><div class="goal-footer"><span>${pct}% atingido</span><span>Falta R$ ${(g.target-g.current).toLocaleString('pt-BR')}</span></div></div>`;}
 function renderGoalsMini(){document.getElementById('goalsMini').innerHTML=goals.map(goalHTML).join('');}
@@ -1065,450 +613,15 @@ function addTransaction(){
   const date=document.getElementById('txDate').value;
   const cat=document.getElementById('txCat').value;
   if(!desc||!amount||!date){alert('Preencha todos os campos!');return;}
-  if (parcelasAtivo) {
-    const n = parseInt(document.getElementById('txParcelas').value) || 2;
-    const juros = parseFloat(document.getElementById('txJuros').value) || 0;
-    let vp;
-    if (juros===0) { vp=amount/n; } else { const i=juros/100; vp=amount*(i*Math.pow(1+i,n))/(Math.pow(1+i,n)-1); }
-    const base = date ? new Date(date+'T12:00:00') : new Date();
-    for (let k=0;k<n;k++) {
-      const d = new Date(base.getFullYear(), base.getMonth()+k, base.getDate());
-      transactions.unshift({id:Date.now()+k, desc:desc+' ('+(k+1)+'/'+n+')', amount:parseFloat(vp.toFixed(2)), type:currentType, date:d.toISOString().split('T')[0], cat, source:'manual', parcela:(k+1)+'/'+n});
-    }
-  } else {
-    transactions.unshift({id:Date.now(),desc,amount,type:currentType,date,cat,source:'manual'});
-  }
-  closeModalDirect();updateAll();syncAfterChange();
+  transactions.unshift({id:Date.now(),desc,amount,type:currentType,date,cat,source:'manual'});
+  closeModalDirect();updateAll();
   document.getElementById('txDesc').value='';document.getElementById('txAmount').value='';
-  parcelasAtivo=false;
-  document.getElementById('toggleSwitch').className='toggle-switch';
-  document.getElementById('parcelasBox').style.display='none';
 }
 
 function changePeriod(v){currentPeriod=v;renderBarChart();}
 
-// EMPRÉSTIMOS
-let emprestimos = [];
-let empTipoAtual = 'emprestei';
-let empParcelasAtivo = false;
-let empTabAtual = 'todos';
-
-function openEmpModal() {
-  document.getElementById('empModalOverlay').classList.add('open');
-  document.getElementById('empData').value = new Date().toISOString().split('T')[0];
-  calcEmpPreview();
-}
-function closeEmpModal(e) { if(e.target===document.getElementById('empModalOverlay')) closeEmpModalDirect(); }
-function closeEmpModalDirect() { document.getElementById('empModalOverlay').classList.remove('open'); }
-
-function setEmpTipo(tipo) {
-  empTipoAtual = tipo;
-  document.getElementById('btnEmprestei').className = 'type-btn' + (tipo==='emprestei' ? ' active-income' : '');
-  document.getElementById('btnDevo').className = 'type-btn' + (tipo==='devo' ? ' active-expense' : '');
-  document.getElementById('empPessoaLabel').textContent = tipo==='emprestei' ? 'Nome de quem recebeu' : 'Nome de quem emprestou';
-}
-
-function toggleEmpParcelas() {
-  empParcelasAtivo = !empParcelasAtivo;
-  document.getElementById('empToggleSwitch').className = 'toggle-switch' + (empParcelasAtivo ? ' on' : '');
-  document.getElementById('empParcelasBox').style.display = empParcelasAtivo ? 'block' : 'none';
-  if (empParcelasAtivo) calcEmpPreview();
-}
-
-function calcEmpPreview() {
-  if (!empParcelasAtivo) return;
-  const valor = parseFloat(document.getElementById('empValor').value) || 0;
-  const n = parseInt(document.getElementById('empNParcelas').value) || 2;
-  const dia = parseInt(document.getElementById('empDiaPag').value) || 10;
-  if (!valor) { document.getElementById('empPreview').innerHTML = '<em>Digite o valor acima</em>'; return; }
-  const vp = valor / n;
-  const hoje = new Date();
-  const next = new Date(hoje.getFullYear(), hoje.getMonth() + (hoje.getDate() >= dia ? 1 : 0), dia);
-  document.getElementById('empPreview').innerHTML =
-    '<strong>' + n + 'x de R$ ' + vp.toLocaleString('pt-BR',{minimumFractionDigits:2}) + '</strong>'
-    + '<br>1ª parcela: ' + next.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
-}
-
-function saveEmprestimo() {
-  const pessoa = document.getElementById('empPessoa').value.trim();
-  const valor = parseFloat(document.getElementById('empValor').value);
-  const data = document.getElementById('empData').value;
-  const desc = document.getElementById('empDesc').value.trim();
-  if (!pessoa || !valor || !data) { alert('Preencha nome, valor e data!'); return; }
-  const n = empParcelasAtivo ? parseInt(document.getElementById('empNParcelas').value) : 1;
-  const dia = empParcelasAtivo ? parseInt(document.getElementById('empDiaPag').value) || 10 : null;
-  const vp = valor / n;
-  const parcelas = Array.from({length:n}, (_,i) => ({ num: i+1, paga: false }));
-  emprestimos.push({ id: Date.now(), tipo: empTipoAtual, pessoa, valor: parseFloat(valor.toFixed(2)), data, desc, parcelado: empParcelasAtivo, n, dia, vp: parseFloat(vp.toFixed(2)), parcelas });
-  closeEmpModalDirect();
-  syncAfterChange();
-  // reset
-  empParcelasAtivo = false;
-  document.getElementById('empToggleSwitch').className = 'toggle-switch';
-  document.getElementById('empParcelasBox').style.display = 'none';
-  document.getElementById('empPessoa').value = '';
-  document.getElementById('empValor').value = '';
-  document.getElementById('empDesc').value = '';
-  renderEmpPage();
-}
-
-function toggleEmpParcela(empId, pNum) {
-  const emp = emprestimos.find(e=>e.id===empId);
-  if (!emp) return;
-  const p = emp.parcelas.find(p=>p.num===pNum);
-  if (p) p.paga = !p.paga;
-  renderEmpPage();
-  syncAfterChange();
-}
-
-function deleteEmp(id) {
-  if (!confirm('Remover este empréstimo?')) return;
-  emprestimos = emprestimos.filter(e=>e.id!==id);
-  renderEmpPage();
-  syncAfterChange();
-}
-
-function setEmpTab(tab) {
-  empTabAtual = tab;
-  ['todos','emprestei','devo'].forEach(t => {
-    document.getElementById('tab-'+t).className = 'chip' + (t===tab ? ' active' : '');
-  });
-  renderEmpPage();
-}
-
-function renderEmpPage() {
-  const list = document.getElementById('emp-list');
-  const summary = document.getElementById('emp-summary');
-  const filtered = empTipoAtual => emprestimos.filter(e => empTabAtual==='todos' || e.tipo===empTabAtual);
-  const shown = filtered();
-
-  // Summary
-  const totalEmprestei = emprestimos.filter(e=>e.tipo==='emprestei').reduce((s,e)=>{
-    const restante = e.parcelas.filter(p=>!p.paga).length * e.vp; return s+restante; },0);
-  const totalDevo = emprestimos.filter(e=>e.tipo==='devo').reduce((s,e)=>{
-    const restante = e.parcelas.filter(p=>!p.paga).length * e.vp; return s+restante; },0);
-  const count = emprestimos.length;
-
-  if (!emprestimos.length) {
-    list.innerHTML = '<div class="card" style="text-align:center;padding:60px;"><div style="font-size:40px;margin-bottom:16px;">🤝</div><div style="font-family:DM Serif Display,serif;font-size:22px;margin-bottom:8px;">Nenhum empréstimo</div><div style="color:var(--muted);font-size:14px;margin-bottom:24px;">Registre empréstimos feitos ou recebidos para não perder o controle</div><button class="btn-primary" style="display:inline-flex;margin:0 auto;" onclick="openEmpModal()">+ Novo empréstimo</button></div>';
-    summary.style.display = 'none'; return;
-  }
-
-  summary.style.display = 'grid';
-  summary.innerHTML = [
-    ['🤝 Total de registros', count + ' empréstimos', 'var(--accent2)'],
-    ['💸 A receber', 'R$ '+totalEmprestei.toLocaleString('pt-BR',{minimumFractionDigits:2}), 'var(--income)'],
-    ['💰 A pagar', 'R$ '+totalDevo.toLocaleString('pt-BR',{minimumFractionDigits:2}), 'var(--expense)'],
-  ].map(([label,val,color])=>`<div class="summary-card"><div class="card-glow" style="background:${color}"></div><div class="card-label">${label}</div><div class="card-value" style="color:${color};font-size:20px;">${val}</div></div>`).join('');
-
-  if (!shown.length) { list.innerHTML = '<div class="card" style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">Nenhum empréstimo nesta categoria.</div>'; return; }
-
-  list.innerHTML = shown.map(function(emp) {
-    var pagas = emp.parcelas.filter(function(p){return p.paga;}).length;
-    var restantes = emp.n - pagas;
-    var pct = Math.round(pagas/emp.n*100);
-    var isQuitado = restantes === 0;
-    var hoje = new Date();
-    var nextStr = '';
-    if (!isQuitado && emp.dia) {
-      var next = new Date(hoje.getFullYear(), hoje.getMonth()+(hoje.getDate()>=emp.dia?1:0), emp.dia);
-      nextStr = next.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
-    }
-    var statusClass = isQuitado ? 'status-quitado' : 'status-pendente';
-    var statusLabel = isQuitado ? '&#10003; Quitado' : (emp.parcelado ? restantes+'x restantes' : 'Pendente');
-    var initials = emp.pessoa.split(' ').map(function(w){return w[0];}).slice(0,2).join('').toUpperCase();
-    var avatarColor = emp.tipo==='emprestei' ? 'rgba(200,241,108,0.15)' : 'rgba(255,107,107,0.15)';
-    var valorColor = emp.tipo==='emprestei' ? 'var(--income)' : 'var(--expense)';
-    var tipoLabel = emp.tipo==='emprestei' ? '&#128184; Emprestei' : '&#128176; Devo';
-    var tipoClass = emp.tipo==='emprestei' ? 'badge-emprestei' : 'badge-devo';
-    var dataStr = new Date(emp.data+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
-    var dots = emp.parcelas.map(function(p) {
-      var cls = p.paga ? 'paid' : (p.num===pagas+1 ? 'next' : 'future');
-      return '<div class="emp-p-dot '+cls+'" onclick="toggleEmpParcela('+emp.id+','+p.num+')" title="Parcela '+p.num+'">'+p.num+'</div>';
-    }).join('');
-
-    var parceladoHTML = '';
-    if (emp.parcelado) {
-      parceladoHTML = '<div>'
-        +'<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;">'
-        +'<span>'+pagas+' de '+emp.n+' parcelas pagas &nbsp;&middot;&nbsp; R$ '+emp.vp.toLocaleString('pt-BR',{minimumFractionDigits:2})+'/parcela</span>'
-        +'<span style="color:'+valorColor+';font-weight:600;">Falta R$ '+(emp.vp*restantes).toLocaleString('pt-BR',{minimumFractionDigits:2})+'</span>'
-        +'</div>'
-        +'<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:'+valorColor+'"></div></div>'
-        +'<div class="emp-parcelas-row" style="margin-top:10px;">'+dots+'</div>'
-        +'<div style="font-size:11px;color:var(--muted);margin-top:6px;">&#128161; Clique nas parcelas para marcar como paga</div>'
-        +'</div>';
-    } else {
-      var statusSpan = isQuitado
-        ? '<span style="color:var(--income)">&#10003; Recebido/Pago</span>'
-        : '<span style="color:#f59e0b">&#9203; Pendente</span>';
-      var btnMarcar = !isQuitado
-        ? '<button onclick="toggleEmpParcela('+emp.id+',1)" style="margin-top:8px;background:rgba(200,241,108,0.1);border:1px solid rgba(200,241,108,0.2);color:var(--income);padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-family:DM Sans,sans-serif;">&#10003; Marcar como '+(emp.tipo==='emprestei'?'recebido':'pago')+'</button>'
-        : '';
-      parceladoHTML = '<div style="font-size:13px;color:var(--muted);">Pagamento único &nbsp;&middot;&nbsp; '+statusSpan+'</div>'+btnMarcar;
-    }
-
-    var footerNext = (!isQuitado && emp.dia) ? '<span>&#128197; Pr&oacute;xima: '+nextStr+'</span>' : '';
-
-    return '<div class="emp-card">'
-      +'<div class="emp-card-header">'
-      +'<div class="emp-avatar" style="background:'+avatarColor+';color:'+valorColor+';">'+initials+'</div>'
-      +'<div class="emp-info">'
-      +'<div class="emp-name">'+emp.pessoa+'</div>'
-      +'<div class="emp-meta">'+(emp.desc||'—')+' &nbsp;&middot;&nbsp; '+dataStr+'</div>'
-      +'</div>'
-      +'<div class="emp-amount">'
-      +'<div class="emp-valor" style="color:'+valorColor+'">R$ '+emp.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})+'</div>'
-      +'<span class="emp-tipo-badge '+tipoClass+'">'+tipoLabel+'</span>'
-      +'</div>'
-      +'</div>'
-      + parceladoHTML
-      +'<div class="emp-card-footer">'
-      +'<span class="emp-status-badge '+statusClass+'">'+statusLabel+'</span>'
-      + footerNext
-      +'<button onclick="deleteEmp('+emp.id+')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;margin-left:auto;">Remover</button>'
-      +'</div>'
-      +'</div>';
-  }).join('');
-
-  document.getElementById('emp-subtitle').textContent = emprestimos.length + ' empréstimo(s) registrado(s)';
-}
-
-// PARCELAS EM ANDAMENTO DATA
-let parcelasAndamento = [];
-
-function openParcelaModal() { document.getElementById('parcelaModalOverlay').classList.add('open'); calcParcelaPreview(); }
-function closeParcelaModal(e) { if(e.target===document.getElementById('parcelaModalOverlay')) closeParcelaModalDirect(); }
-function closeParcelaModalDirect() { document.getElementById('parcelaModalOverlay').classList.remove('open'); }
-
-function calcParcelaPreview() {
-  const total = parseFloat(document.getElementById('pmTotal').value) || 0;
-  const n = parseInt(document.getElementById('pmTotal2').value) || 2;
-  const paga = parseInt(document.getElementById('pmAtual').value) || 1;
-  const dia = parseInt(document.getElementById('pmDia').value) || 10;
-  const juros = parseFloat(document.getElementById('pmJuros').value) || 0;
-  const restantes = n - paga;
-  if (!total) { document.getElementById('pmPreview').innerHTML = '<em>Preencha o valor total</em>'; return; }
-  let vp;
-  if (juros===0) { vp=total/n; } else { const i=juros/100; vp=total*(i*Math.pow(1+i,n))/(Math.pow(1+i,n)-1); }
-  const pago = vp * paga;
-  const falta = vp * restantes;
-  const hoje = new Date();
-  const next = new Date(hoje.getFullYear(), hoje.getMonth() + (hoje.getDate() >= dia ? 1 : 0), dia);
-  document.getElementById('pmPreview').innerHTML =
-    '<strong>'+vp.toLocaleString('pt-BR',{minimumFractionDigits:2})+'</strong>/parcela &nbsp;·&nbsp; '
-    + '<span style="color:var(--income)">'+paga+'x pagas</span> &nbsp;·&nbsp; '
-    + '<span style="color:var(--expense)">'+restantes+'x restantes</span>'
-    + '<br>Já pago: R$ '+pago.toLocaleString('pt-BR',{minimumFractionDigits:2})
-    + ' &nbsp;·&nbsp; Falta: <strong style="color:var(--expense)">R$ '+falta.toLocaleString('pt-BR',{minimumFractionDigits:2})+'</strong>'
-    + '<br>Próximo vencimento: '+next.toLocaleDateString('pt-BR',{day:'2-digit',month:'long'});
-  // update pmAtual options based on pmTotal2
-  const atualSel = document.getElementById('pmAtual');
-  const curVal = atualSel.value;
-  atualSel.innerHTML = '';
-  for(let i=1;i<n;i++) { const o=document.createElement('option'); o.value=i; o.textContent=i+'ª (paguei '+i+')'; if(i==curVal) o.selected=true; atualSel.appendChild(o); }
-}
-
-function saveParcelaAndamento() {
-  const desc = document.getElementById('pmDesc').value.trim();
-  const total = parseFloat(document.getElementById('pmTotal').value);
-  const n = parseInt(document.getElementById('pmTotal2').value);
-  const paga = parseInt(document.getElementById('pmAtual').value);
-  const dia = parseInt(document.getElementById('pmDia').value) || 10;
-  const juros = parseFloat(document.getElementById('pmJuros').value) || 0;
-  const cat = document.getElementById('pmCat').value;
-  if(!desc||!total||!n) { alert('Preencha todos os campos!'); return; }
-  let vp;
-  if(juros===0){vp=total/n;}else{const i=juros/100;vp=total*(i*Math.pow(1+i,n))/(Math.pow(1+i,n)-1);}
-  parcelasAndamento.push({ id:Date.now(), desc, total:parseFloat(total.toFixed(2)), n, paga, dia, juros, cat, vp:parseFloat(vp.toFixed(2)) });
-  closeParcelaModalDirect();
-  renderParcelasPage();
-  syncAfterChange();
-  document.getElementById('pmDesc').value=''; document.getElementById('pmTotal').value='';
-}
-
-function deleteParcelaAndamento(id) {
-  if(!confirm('Remover esta parcela?')) return;
-  parcelasAndamento = parcelasAndamento.filter(p=>p.id!==id);
-  renderParcelasPage();
-}
-
-function renderParcelasPage() {
-  const list = document.getElementById('parcelas-list');
-  const summary = document.getElementById('parcelas-summary');
-  if(!parcelasAndamento.length) {
-    list.innerHTML = '<div class="card" style="text-align:center;padding:60px;"><div style="font-size:40px;margin-bottom:16px;">💳</div><div style="font-family:DM Serif Display,serif;font-size:22px;margin-bottom:8px;">Nenhuma parcela cadastrada</div><div style="color:var(--muted);font-size:14px;margin-bottom:24px;">Cadastre compras parceladas em andamento para acompanhar os vencimentos</div><button class="btn-primary" style="display:inline-flex;margin:0 auto;" onclick="openParcelaModal()">+ Adicionar parcela</button></div>';
-    summary.innerHTML=''; summary.style.display='none';
-    return;
-  }
-  summary.style.display='grid';
-  const totalFalta = parcelasAndamento.reduce((s,p)=>s+p.vp*(p.n-p.paga),0);
-  const totalMes = parcelasAndamento.reduce((s,p)=>s+(p.paga<p.n?p.vp:0),0);
-  const count = parcelasAndamento.filter(p=>p.paga<p.n).length;
-  summary.innerHTML = [
-    ['💳 Parcelas ativas', count+' compras', 'var(--accent2)'],
-    ['📅 Total este mês', 'R$ '+totalMes.toLocaleString('pt-BR',{minimumFractionDigits:2}), 'var(--expense)'],
-    ['💰 Total restante', 'R$ '+totalFalta.toLocaleString('pt-BR',{minimumFractionDigits:2}), 'var(--accent)'],
-  ].map(([label,val,color])=>`<div class="summary-card"><div class="card-glow" style="background:${color}"></div><div class="card-label">${label}</div><div class="card-value" style="color:${color};font-size:22px;">${val}</div></div>`).join('');
-
-  list.innerHTML = parcelasAndamento.map(p => {
-    const restantes = p.n - p.paga;
-    const pct = Math.round(p.paga/p.n*100);
-    const done = restantes === 0;
-    const hoje = new Date();
-    const next = new Date(hoje.getFullYear(), hoje.getMonth()+(hoje.getDate()>=p.dia?1:0), p.dia);
-    const dots = Array.from({length:p.n},(_,i)=>{
-      const cls = i<p.paga ? 'paid' : i===p.paga ? 'next' : 'future';
-      return '<div class="p-dot '+cls+'">'+(i+1)+'</div>';
-    }).join('');
-    return '<div class="parcela-card">'
-      +'<div class="parcela-card-header">'
-      +'<div class="parcela-card-icon" style="background:'+( CAT_COLORS[p.cat]||'#6b7280')+'22;">'+( CAT_ICONS[p.cat]||'📦')+'</div>'
-      +'<div class="parcela-card-info"><div class="parcela-card-name">'+p.desc+'</div><div class="parcela-card-meta">'+p.cat+' &nbsp;·&nbsp; vence dia '+p.dia+(p.juros>0?' &nbsp;·&nbsp; '+p.juros+'% a.m.':'')+'</div></div>'
-      +'<div class="parcela-card-amount"><div class="parcela-card-vp">R$ '+p.vp.toLocaleString('pt-BR',{minimumFractionDigits:2})+'</div><div class="parcela-card-total">de R$ '+p.total.toLocaleString('pt-BR',{minimumFractionDigits:2})+'</div></div>'
-      +'</div>'
-      +'<div class="parcela-progress-wrap">'
-      +'<div class="parcela-progress-label"><span>'+p.paga+' de '+p.n+' pagas ('+pct+'%)</span><span>Falta R$ '+(p.vp*restantes).toLocaleString('pt-BR',{minimumFractionDigits:2})+'</span></div>'
-      +'<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:'+( CAT_COLORS[p.cat]||'var(--accent)')+'"></div></div>'
-      +'</div>'
-      +'<div class="parcela-timeline">'+dots+'</div>'
-      +'<div class="parcela-card-footer">'
-      +(done ? '<span class="done-badge">✓ Quitada!</span>' : '<span class="next-badge">📅 Próximo: '+next.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})+'</span>')
-      +'<button onclick="deleteParcelaAndamento('+p.id+')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;">Remover</button>'
-      +'</div>'
-      +'</div>';
-  }).join('');
-  document.getElementById('parcelas-subtitle').textContent = parcelasAndamento.length+' parcela(s) cadastrada(s)';
-}
-
-// PARCELAS MODAL TOGGLE
-let parcelasAtivo = false;
-function toggleParcelas() {
-  parcelasAtivo = !parcelasAtivo;
-  document.getElementById('toggleSwitch').className = 'toggle-switch' + (parcelasAtivo ? ' on' : '');
-  document.getElementById('parcelasBox').style.display = parcelasAtivo ? 'block' : 'none';
-  if (parcelasAtivo) updatePreview();
-}
-function updatePreview() {
-  const amount = parseFloat(document.getElementById('txAmount').value) || 0;
-  const n = parseInt(document.getElementById('txParcelas').value) || 2;
-  const juros = parseFloat(document.getElementById('txJuros').value) || 0;
-  if (!amount) { document.getElementById('parcelaPreview').innerHTML = '<em>Digite o valor total acima</em>'; return; }
-  let vp, total;
-  if (juros === 0) { vp = amount/n; total = amount; }
-  else { const i=juros/100; vp = amount*(i*Math.pow(1+i,n))/(Math.pow(1+i,n)-1); total=vp*n; }
-  const base = new Date(); const first = new Date(base.getFullYear(), base.getMonth()+1, base.getDate());
-  document.getElementById('parcelaPreview').innerHTML =
-    '<strong>'+n+'x de R$ '+vp.toLocaleString('pt-BR',{minimumFractionDigits:2})+'</strong>'+(juros>0?' <span style="color:var(--expense)">(+juros)</span>':'')
-    +'<br>Total: R$ '+total.toLocaleString('pt-BR',{minimumFractionDigits:2})
-    +(juros>0?' <span style="color:var(--expense)">(+R$ '+(total-amount).toLocaleString('pt-BR',{minimumFractionDigits:2})+' de juros)</span>':'')
-    +'<br>1ª parcela vence em: '+first.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
-}
-
-// LOCK APP
-function lockApp() {
-  isUnlocked = false;
-  currentPin = '';
-  pendingPin = '';
-  updatePinDots();
-  document.getElementById('lockError').textContent = '';
-  document.getElementById('lockTitle').textContent = 'FinancasPro';
-  document.getElementById('lockSub').textContent = 'Digite seu PIN para entrar';
-  document.getElementById('lockScreen').classList.remove('hidden');
-}
-
 // INIT
-initLockScreen();
 renderBarChart();renderDonut();renderRecentTransactions();renderGoalsMini();updateSummary();
 </script>
-
-<!-- EMPRÉSTIMO MODAL -->
-<div class="modal-overlay" id="empModalOverlay" onclick="closeEmpModal(event)">
-  <div class="modal" style="width:480px;">
-    <h2 class="modal-title" id="empModalTitle">🤝 Novo Empréstimo</h2>
-
-    <!-- TIPO TOGGLE -->
-    <div class="type-toggle" style="margin-bottom:20px;">
-      <button class="type-btn active-income" id="btnEmprestei" onclick="setEmpTipo('emprestei')">💸 Emprestei</button>
-      <button class="type-btn" id="btnDevo" onclick="setEmpTipo('devo')">💰 Peguei emprestado</button>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" id="empPessoaLabel">Nome de quem recebeu</label>
-      <input class="form-input" id="empPessoa" placeholder="Ex: João Silva" />
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Valor (R$)</label><input class="form-input" id="empValor" type="number" placeholder="0,00" oninput="calcEmpPreview()" /></div>
-      <div class="form-group"><label class="form-label">Data</label><input class="form-input" id="empData" type="date" /></div>
-    </div>
-    <div class="form-group"><label class="form-label">Descrição / Motivo</label><input class="form-input" id="empDesc" placeholder="Ex: Ajuda para conta, compra..." /></div>
-
-    <!-- PARCELAS -->
-    <div class="parcelas-toggle" onclick="toggleEmpParcelas()" id="empParcelasToggle" style="margin-top:4px;">
-      <span class="parcelas-toggle-label">📅 Será pago em parcelas?</span>
-      <div class="toggle-switch" id="empToggleSwitch"><div class="toggle-knob"></div></div>
-    </div>
-    <div class="parcelas-box" id="empParcelasBox" style="display:none;">
-      <div class="parcelas-grid">
-        <div class="form-group" style="margin-bottom:0;">
-          <label class="form-label">Nº de parcelas</label>
-          <select class="form-select" id="empNParcelas" onchange="calcEmpPreview()">
-            <option value="2">2x</option><option value="3">3x</option><option value="4">4x</option>
-            <option value="5">5x</option><option value="6">6x</option><option value="8">8x</option>
-            <option value="10">10x</option><option value="12">12x</option>
-          </select>
-        </div>
-        <div class="form-group" style="margin-bottom:0;">
-          <label class="form-label">Dia do pagamento</label>
-          <input class="form-input" id="empDiaPag" type="number" min="1" max="31" value="10" oninput="calcEmpPreview()" />
-        </div>
-      </div>
-      <div class="parcela-preview" id="empPreview" style="margin-top:10px;"></div>
-    </div>
-
-    <div class="modal-actions" style="margin-top:20px;">
-      <button class="btn-ghost" onclick="closeEmpModalDirect()">Cancelar</button>
-      <button class="btn-confirm" onclick="saveEmprestimo()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- PARCELA MODAL -->
-<div class="modal-overlay" id="parcelaModalOverlay" onclick="closeParcelaModal(event)">
-  <div class="modal" style="width:460px;">
-    <h2 class="modal-title">💳 Parcela em Andamento</h2>
-    <div class="form-group"><label class="form-label">Descrição</label><input class="form-input" id="pmDesc" placeholder="Ex: TV Samsung, Notebook..." /></div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Valor total (R$)</label><input class="form-input" id="pmTotal" type="number" placeholder="1.500,00" oninput="calcParcelaPreview()" /></div>
-      <div class="form-group"><label class="form-label">Categoria</label>
-        <select class="form-select" id="pmCat">
-          <option value="Alimentação">🍔 Alimentação</option><option value="Moradia">🏠 Moradia</option><option value="Transporte">🚗 Transporte</option><option value="Saúde">💊 Saúde</option><option value="Lazer">🎮 Lazer</option><option value="Educação">📚 Educação</option><option value="Salário">💼 Salário</option><option value="Investimento">📈 Investimento</option><option value="Outros">📦 Outros</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Total de parcelas</label>
-        <select class="form-select" id="pmTotal2" onchange="calcParcelaPreview()">
-          <option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option><option value="6">6x</option><option value="7">7x</option><option value="8">8x</option><option value="9">9x</option><option value="10">10x</option><option value="11">11x</option><option value="12">12x</option><option value="18">18x</option><option value="24">24x</option>
-        </select>
-      </div>
-      <div class="form-group"><label class="form-label">Parcela atual (já paguei até)</label>
-        <select class="form-select" id="pmAtual" onchange="calcParcelaPreview()">
-          <option value="1">1ª (paguei 1)</option><option value="2">2ª (paguei 2)</option><option value="3">3ª (paguei 3)</option><option value="4">4ª (paguei 4)</option><option value="5">5ª (paguei 5)</option><option value="6">6ª (paguei 6)</option><option value="7">7ª (paguei 7)</option><option value="8">8ª (paguei 8)</option><option value="9">9ª (paguei 9)</option><option value="10">10ª (paguei 10)</option><option value="11">11ª (paguei 11)</option><option value="12">12ª (paguei 12)</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Dia do vencimento</label><input class="form-input" id="pmDia" type="number" min="1" max="31" value="10" oninput="calcParcelaPreview()" /></div>
-      <div class="form-group"><label class="form-label">Juros (% a.m.)</label><input class="form-input" id="pmJuros" type="number" value="0" min="0" step="0.1" oninput="calcParcelaPreview()" /></div>
-    </div>
-    <div class="parcela-preview" id="pmPreview" style="margin-bottom:0;">—</div>
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeParcelaModalDirect()">Cancelar</button>
-      <button class="btn-confirm" onclick="saveParcelaAndamento()">Salvar parcela</button>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
