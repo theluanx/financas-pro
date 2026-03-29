@@ -404,7 +404,7 @@
     <div class="nav-section">
       <div class="nav-label">Principal</div>
       <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-dot"></span> Dashboard</div>
-      <div class="nav-item" onclick="showPage('transactions')"><span class="nav-dot"></span> Transações <span class="badge" id="badge-tx">8</span></div>
+      <div class="nav-item" onclick="showPage('transactions')"><span class="nav-dot"></span> Transações <span class="badge" id="badge-tx">0</span></div>
       <div class="nav-item" onclick="showPage('goals')"><span class="nav-dot"></span> Metas</div>
       <div class="nav-item" onclick="showPage('parcelas')"><span class="nav-dot"></span> 💳 Parcelas</div>
       <div class="nav-item" onclick="showPage('emprestimos')"><span class="nav-dot"></span> 🤝 Empréstimos</div>
@@ -417,7 +417,7 @@
   </nav>
   <div class="sidebar-bottom">
     <div class="user-card">
-      <div class="user-avatar">LL</div>
+      <div class="user-avatar">JM</div>
       <div class="user-info"><div class="user-name">Luan LIMA</div><div class="user-plan">Open Finance ✦</div></div>
       <button onclick="lockApp()" title="Bloquear" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:4px;" >🔒</button>
     </div>
@@ -485,7 +485,7 @@
   <div id="page-transactions" style="display:none">
     <div class="topbar">
       <div><h1 class="page-title">Transações</h1><p class="page-subtitle" id="tx-count-label">8 registros</p></div>
-      <div class="topbar-right"><button class="btn-primary" onclick="openModal()">+ Nova</button></div>
+      <div class="topbar-right"><button class="btn-ghost" onclick="clearAllData()" style="color:var(--expense);border-color:rgba(255,107,107,0.3);">🗑️ Limpar tudo</button><button class="btn-primary" onclick="openModal()">+ Nova</button></div>
     </div>
     <div class="card"><div class="tx-list" id="allTxList"></div></div>
   </div>
@@ -820,6 +820,14 @@ function renderEmpPage(){var list=document.getElementById('emp-list');var summar
 // ═══════════════════════════════════════════════════════════
 // LOCK APP
 // ═══════════════════════════════════════════════════════════
+function clearAllData(){
+  if(!confirm('Tem certeza? Isso vai apagar TODAS as transações, metas, parcelas e empréstimos!'))return;
+  transactions=[];goals=[];parcelasAndamento=[];emprestimos=[];
+  updateAll();renderGoalsMini();updateSummary();renderBarChart();
+  saveToSupabase();
+  alert('Dados limpos com sucesso!');
+}
+
 function lockApp(){isUnlocked=false;currentPin='';pendingPin='';updatePinDots();document.getElementById('lockError').textContent='';document.getElementById('lockTitle').textContent='FinançasPro';document.getElementById('lockSub').textContent='Digite seu PIN para entrar';document.getElementById('lockScreen').classList.remove('hidden');}
 
 // INIT
